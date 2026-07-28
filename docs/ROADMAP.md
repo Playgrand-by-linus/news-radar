@@ -1,12 +1,12 @@
 # AI News Radar Roadmap
 
-## Parked — 三口味 persona 网页 UI（2026-07-15 归档）
+## Parked — 三口味 persona 網頁 UI（2026-07-15 歸檔）
 
-v0.8–v0.9 期间网页端曾上线「今日 TOP3 · 三口味锐评」置顶板块与精选卡片的单条锐评行，因样式不满意在 v0.9 发布前暂时下线，待重新设计后回归。
+v0.8–v0.9 期間網頁端曾上線「今日 TOP3 · 三口味銳評」置頂板塊與精選卡片的單條銳評行，因樣式不滿意在 v0.9 釋出前暫時下線，待重新設計後迴歸。
 
-- 开关：`assets/app.js` 的 `PERSONA_UI_ENABLED`（现为 `false`，置回 `true` 即恢复板块与锐评行，渲染代码完整保留）。
-- 不受影响：数据管线（`scripts/persona_score.py` 每轮照常生成 `data/daily-brief.json` 的 persona 字段与 `data/top3-personas.json`）、Skill 端日报的三口味点评。
-- 回归前要解决的：三列并排面板与卡片视觉融合度、锐评行与推荐理由的层级关系、口味名称/分数的展示样式。
+- 開關：`assets/app.js` 的 `PERSONA_UI_ENABLED`（現為 `false`，置回 `true` 即恢復板塊與銳評行，渲染程式碼完整保留）。
+- 不受影響：資料Pipeline（`scripts/persona_score.py` 每輪照常生成 `data/daily-brief.json` 的 persona 欄位與 `data/top3-personas.json`）、Skill 端日報的三口味點評。
+- 迴歸前要解決的：三列並排面板與卡片視覺融合度、銳評行與推薦理由的層級關係、口味名稱/分數的展示樣式。
 
 ## v0.3.0 — Source Overlap Check
 
@@ -101,7 +101,7 @@ Goal: move beyond per-item filtering and represent the same event as one story w
 - Keep the current filter-first behavior as the safe default.
 - Add a story clustering layer after source normalization and before page payload generation.
 - Preserve one primary title plus secondary source references, instead of randomly choosing one duplicated item.
-- Show repeated coverage as a trust signal: "多个来源报道了这件事".
+- Show repeated coverage as a trust signal: "多個來源報道了這件事".
 
 ### Non-goals for v0.5.0
 

@@ -145,7 +145,7 @@ baseline, then let the aggregator layer add breadth.
   paid-source state exists yet. Prefer focused AI
   keywords over general hot lists so entertainment trends do not flood the
   Signal view. The default query puts focused AI terms such as OpenAI, Claude,
-  large models, Agent, and AI tools ahead of broad `AI`/`人工智能` fallbacks, and
+  large models, Agent, and AI tools ahead of broad `AI`/`人工智慧` fallbacks, and
   per-platform caps are spread across keywords so one broad term cannot consume
   the whole paid-source budget. TikHub requests use the most-liked/popularity
   sort and a one-week publish bucket, then the radar enforces the current-week
@@ -198,7 +198,7 @@ to pass through the real project fetch path on GitHub Actions:
 - **Official examples**: OpenAI News, Hugging Face Blog, Google DeepMind Blog,
   Google AI Blog, and Microsoft AI Blog.
 - **AI media / builder feeds**: Wired AI, InfoQ CN, NVIDIA Generative AI Blog,
-  宝玉, and Simon Willison.
+  寶玉, and Simon Willison.
 
 In GitHub Actions, `feeds/follow.example.opml` is also used as the public demo
 fallback when no private `FOLLOW_OPML_B64` secret is configured. This keeps the

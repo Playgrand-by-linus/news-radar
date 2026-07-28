@@ -105,13 +105,13 @@ Please verify:
 ## Suggested Prompt For New GPT
 
 ```text
-你现在接手本地项目：
+你現在接手本地專案：
 /Users/carl2077/workspace/ai-news-radar
 
-请使用项目内 Skill：
+請使用專案內 Skill：
 skills/ai-news-radar/SKILL.md
 
-请先阅读：
+請先閱讀：
 README.md
 docs/GPT_HANDOFF.md
 docs/SOURCE_COVERAGE.md
@@ -119,12 +119,12 @@ docs/V2_PRODUCT_BRIEF.md
 skills/ai-news-radar/references/source-intake.md
 skills/ai-news-radar/references/v2-method.md
 
-任务：
-1. 判断这个 AI 新闻聚合项目是否已经达到 v2 soft launch / 可公开发布状态。
-2. 分别从普通读者、fork 用户、Codex/Claude Skill 用户三个角度验收 README 和项目结构。
-3. 检查是否有隐私/密钥/OPML 泄漏风险。
-4. 检查信息源覆盖是否诚实：哪些是公共默认源，哪些只是高级/私有路径。
-5. 如果发现问题，请按严重程度列出具体文件和建议修复方式。
+任務：
+1. 判斷這個 AI 新聞聚合專案是否已經達到 v2 soft launch / 可公開發布狀態。
+2. 分別從普通讀者、fork 使用者、Codex/Claude Skill 使用者三個角度驗收 README 和專案結構。
+3. 檢查是否有隱私/金鑰/OPML 洩漏風險。
+4. 檢查資訊源覆蓋是否誠實：哪些是公共預設源，哪些只是高階/私有路徑。
+5. 如果發現問題，請按嚴重程度列出具體檔案和建議修復方式。
 
-不要直接重构。先做验收报告。
+不要直接重構。先做驗收報告。
 ```

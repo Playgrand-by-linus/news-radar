@@ -108,9 +108,9 @@ An **OpenClaw Skill** for generating a Chinese AI morning brief from English tec
 A formatted Chinese daily brief, for example:
 
 ```markdown
-🤖 AI 早报 | YYYY.MM.DD（weekday）
+🤖 AI 早報 | YYYY.MM.DD（weekday）
 ...
-📌 一句话点评：...
+📌 一句話點評：...
 ```
 
 No public RSS/JSON output was found.
@@ -333,7 +333,7 @@ Probe result for `source-status.json`:
 | SuYxh source status | `https://suyxh.github.io/ai-news-aggregator/data/source-status.json` | public status JSON | probe: 200 JSON | no | low | useful health comparison/reference |
 | SuYxh OPML feed list | `https://suyxh.github.io/ai-news-aggregator/data/opml-feeds.json` | public source list JSON | probe via raw repo: 7 categories | no | medium-high | source candidate inventory, not default import |
 | QbitAI RSS | `https://www.qbitai.com/feed` | RSS | listed in OPML JSON | no | medium | example OPML/watchlist |
-| 宝玉 feed | `https://baoyu.io/feed.xml` | RSS | listed | no | medium | example OPML, user-relevant Chinese AI signal |
+| 寶玉 feed | `https://baoyu.io/feed.xml` | RSS | listed | no | medium | example OPML, user-relevant Chinese AI signal |
 | Meituan Tech | `https://tech.meituan.com/feed/` | RSS | listed | no | high for AI | skip/default; personal OPML only |
 | X bridge feeds | `https://api.xgo.ing/rss/user/...` | third-party X RSS bridge | bridge-dependent | no direct secret | high/fragile | advanced/watchlist, not default |
 | WeChat RSS bridge | `https://decemberpei.cyou/rssbox/wechat-*.xml` | third-party WeChat RSS | bridge-dependent | no direct secret | high/fragile | advanced/watchlist only |
@@ -428,7 +428,7 @@ However, no default public slug/source list suitable for direct ingestion was id
 | SuYxh latest JSON | `https://suyxh.github.io/ai-news-aggregator/data/latest-24h.json` | SuYxh aggregator | public generated JSON | generated feed fetcher | medium | high | medium | medium | `watchlist` / candidate fetcher |
 | SuYxh OPML source list | `https://suyxh.github.io/ai-news-aggregator/data/opml-feeds.json` | SuYxh aggregator | source inventory JSON | candidate inventory only | low as default | mixed | high | medium-high | `watchlist` |
 | QbitAI RSS | `https://www.qbitai.com/feed` | SuYxh OPML | RSS | OPML example | medium | needs probe | medium | low-medium | `example-opml` |
-| 宝玉 feed | `https://baoyu.io/feed.xml` | SuYxh OPML | RSS | OPML example | medium | needs probe | medium | low | `example-opml` |
+| 寶玉 feed | `https://baoyu.io/feed.xml` | SuYxh OPML | RSS | OPML example | medium | needs probe | medium | low | `example-opml` |
 | X bridge feeds | `https://api.xgo.ing/rss/user/...` | SuYxh / ClawFeed | bridge RSS | private/advanced only | low | mixed | high | high | `advanced-adapter` / `watchlist` |
 | WeChat RSS bridge | `https://decemberpei.cyou/rssbox/wechat-*.xml` | SuYxh | bridge RSS | advanced only | low | mixed | medium-high | high | `advanced-adapter` |
 | AI For Developers | `https://aifordevelopers.substack.com/feed` | awesome-ai-newsletters | Substack RSS | OPML example | medium | high | medium | low | `example-opml` |
@@ -459,7 +459,7 @@ Good candidates after one more quick probe and review:
 - AI Evaluation Substack — `https://aievaluation.substack.com/feed`
 - BuzzRobot — `https://buzzrobot.substack.com/feed`
 - QbitAI — `https://www.qbitai.com/feed`
-- 宝玉 — `https://baoyu.io/feed.xml`
+- 寶玉 — `https://baoyu.io/feed.xml`
 
 ### Keep as advanced/private adapter
 

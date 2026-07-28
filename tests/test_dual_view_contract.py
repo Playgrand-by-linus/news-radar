@@ -72,7 +72,7 @@ def test_both_headers_keep_time_and_switch_inside_the_headline():
 
         assert headline_position < updated_position < switch_position < meta_position
         assert 'class="hero-tag"' not in source
-        assert ">GitHub 与接入指南</a>" in source
+        assert ">GitHub 與接入指南</a>" in source
 
 
 def test_classic_header_does_not_animate_the_view_switch_container():

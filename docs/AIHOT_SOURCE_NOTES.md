@@ -100,13 +100,13 @@ secret-backed unless a stable public generated feed exists.
 
 Public AI HOT pages show Chinese-source items including:
 
-- 数字生命卡兹克
-- 卡尔的AI沃茨
+- 數字生命卡茲克
+- 卡爾的AI沃茨
 - MiniMax / 稀宇科技
 - 月之暗面 / Kimi
-- 通义实验室 / 千问
-- 智谱 / GLM
-- 蚂蚁百灵 / Ling
+- 通義實驗室 / 千問
+- 智譜 / GLM
+- 螞蟻百靈 / Ling
 - IT之家
 
 These may come from RSS, public-account pipelines, manual curation, or internal
