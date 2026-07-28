@@ -1,6 +1,6 @@
 ---
 name: ai-news-radar
-description: "Use when working on AI News Radar, 24 小时 AI 更新雷达, AI 更新雷达, 伯乐Skill, or Scout Skill: finding high-signal AI/tech sources, adding RSS/OPML/GitHub feeds, checking source health, updating the web UI, GitHub Actions, or GitHub Pages deployment."
+description: "Use when working on AI News Radar, 24 小時 AI 更新雷達, AI 更新雷達, 伯樂Skill, or Scout Skill: finding high-signal AI/tech sources, adding RSS/OPML/GitHub feeds, checking source health, updating the web UI, GitHub Actions, or GitHub Pages deployment."
 ---
 
 # AI News Radar
@@ -9,7 +9,7 @@ description: "Use when working on AI News Radar, 24 小时 AI 更新雷达, AI �
 
 When this skill triggers inside the repo, read these files first:
 
-- `skills/ai-news-radar/README.md` for the public-facing 伯乐Skill / Scout Skill positioning,
+- `skills/ai-news-radar/README.md` for the public-facing 伯樂Skill / Scout Skill positioning,
   source-intake prompt, and install-after-first-message guidance.
 - `README.md` for project usage and current commands.
 - `docs/GPT_HANDOFF.md` before release-readiness checks or handing the project
@@ -54,7 +54,7 @@ Avoid adding many reader-facing choices. Prefer better defaults, source quality,
 and clearer status output.
 
 The v2 packaging goal is a forkable public site plus a reusable agent Skill.
-The public-facing Skill name is **伯乐Skill** in Chinese and **Scout Skill** in English. It should feel concrete and easy to use: a scout that helps choose high-signal sources worth tracking, instead of implying that the system knows everything or blindly adding every noisy feed.
+The public-facing Skill name is **伯樂Skill** in Chinese and **Scout Skill** in English. It should feel concrete and easy to use: a scout that helps choose high-signal sources worth tracking, instead of implying that the system knows everything or blindly adding every noisy feed.
 Ordinary users should be able to browse the hosted page. Maintainers should be
 able to add their own sources with OPML, public generated feeds, or secret-backed
 optional adapters without changing the public default.
@@ -87,7 +87,7 @@ When the user has installed or forked the project but does not know how to start
 ask them for a source list first. A good kickoff prompt is:
 
 ```text
-请使用伯乐Skill，先问我要信息源清单，然后帮我判断每个信源该用 RSS、OPML、公开 feed、静态页面、Jina 兜底、AgentMail 邮箱还是跳过。目标是部署一个不需要服务器、能用 GitHub Actions 自动更新的 AI 日报网站。不要把任何 API Key、cookies、token、真实 OPML、邮箱正文或私有邮件内容写入仓库。
+請使用伯樂Skill，先問我要資訊源清單，然後幫我判斷每個資訊來源該用 RSS、OPML、公開 feed、靜態頁面、Jina Fallback、AgentMail 郵箱還是跳過。目標是部署一個不需要伺服器、能用 GitHub Actions 自動更新的 AI 日報網站。不要把任何 API Key、cookies、token、真實 OPML、郵箱正文或私有郵件內容寫入倉庫。
 ```
 
 Use OPML for private customization:

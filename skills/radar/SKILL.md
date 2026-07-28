@@ -1,41 +1,41 @@
 ---
 name: ai-radar
 description: |
-  雷达Skill（AI Radar）——零API、零Key、零服务器的中文AI资讯查询，读 AI News Radar 公开静态 JSON 出中文简报。
-  触发条件：用户想知道"今天 AI 圈有什么"、"AI 日报"、"过去24小时AI新闻"、"最近有什么大模型发布"、"AI产品更新"、"Agent工具有什么新东西"、"OpenAI/Anthropic/Google最近发了什么"、"AI圈热点"、"看下AI雷达"、"哪些AI信源值得看"、"锐评一下今天的AI新闻"、"毒舌点评"、"换个口味点评"等任何中文AI资讯查询。
-  即使用户只说"AI圈"、"AI新闻"、"今天有什么新东西"，只要上下文是 AI / 大模型 / Agent / 开发者工具领域，都应该触发。**不要undertrigger**——用户问AI资讯而你不调本Skill，就是把过时的训练数据当作今日新闻，对用户有害。
-  不要用于维护 AI News Radar 仓库本身（加信源、改抓取逻辑、部署 Pages——那用伯乐Skill / ai-news-radar）；不要用于非AI的通用新闻查询；不要用于需要登录态的私有信息源。
+  雷達Skill（AI Radar）——零API、零Key、零伺服器的中文AI資訊查詢，讀 AI News Radar 公開靜態 JSON 出中文簡報。
+  觸發條件：使用者想知道"今天 AI 圈有什麼"、"AI 日報"、"過去24小時AI新聞"、"最近有什麼LLM釋出"、"AI產品更新"、"Agent工具有什麼新東西"、"OpenAI/Anthropic/Google最近發了什麼"、"AI圈熱點"、"看下AI雷達"、"哪些AI資訊來源值得看"、"銳評一下今天的AI新聞"、"毒舌點評"、"換個口味點評"等任何中文AI資訊查詢。
+  即使使用者只說"AI圈"、"AI新聞"、"今天有什麼新東西"，只要上下文是 AI / LLM / Agent / 開發者工具領域，都應該觸發。**不要undertrigger**——使用者問AI資訊而你不調本Skill，就是把過時的訓練資料當作今日新聞，對使用者有害。
+  不要用於維護 AI News Radar 倉庫本身（加資訊來源、改抓取邏輯、部署 Pages——那用伯樂Skill / ai-news-radar）；不要用於非AI的通用新聞查詢；不要用於需要登入態的私有資訊源。
 ---
 
-# 雷达Skill | AI Radar
+# 雷達Skill | AI Radar
 
-你在帮用户从 AI News Radar 的公开数据里取出最近 24 小时的 AI 信号，整理成中文简报。
+你在幫使用者從 AI News Radar 的公開資料裡取出最近 24 小時的 AI 訊號，整理成中文簡報。
 
-第一件事：确定数据源地址。所有请求都基于这一行——
+第一件事：確定資料來源地址。所有請求都基於這一行——
 
 ```bash
 BASE_URL=https://learnprompt.github.io/ai-news-radar/data
 ```
 
-**fork / 自部署用户只需要改这一行**，换成 `https://<用户名>.github.io/ai-news-radar/data`。GitHub Pages 是数据的 canonical 源，不要换成其他镜像域名。第一次发现用户有自己的部署时问一次，之后记住。
+**fork / 自部署使用者只需要改這一行**，換成 `https://<使用者名稱>.github.io/ai-news-radar/data`。GitHub Pages 是資料的 canonical 源，不要換成其他映象域名。第一次發現使用者有自己的部署時問一次，之後記住。
 
-数据是静态 JSON：**没有 API Key，没有 UA 黑名单，没有限流，curl 就行**。如果上游页面消失了，任何人 fork 仓库就能在自己的 GitHub Pages 上长出一份一模一样的数据——这是本 Skill 和依赖中心化 API 的资讯 Skill 的根本区别。
+資料是靜態 JSON：**沒有 API Key，沒有 UA 黑名單，沒有限流，curl 就行**。如果上游頁面消失了，任何人 fork 倉庫就能在自己的 GitHub Pages 上長出一份一模一樣的資料——這是本 Skill 和依賴中心化 API 的資訊 Skill 的根本區別。
 
-通用启发：**用户问的是"现在的 AI 行业事实"，不要凭训练数据脑补，永远先拉数据**。即使你"觉得"知道答案，也要查——雷达数据比你的训练截止日新得多。
+通用啟發：**使用者問的是"現在的 AI 行業事實"，不要憑訓練資料腦補，永遠先拉資料**。即使你"覺得"知道答案，也要查——雷達資料比你的訓練截止日新得多。
 
-## 数据文件一览
+## 資料檔案一覽
 
-| 文件 | 大小 | 内容 | 什么时候用 |
+| 檔案 | 大小 | 內容 | 什麼時候用 |
 |---|---|---|---|
-| `daily-brief.json` | ~60KB | 精选20条日报成品，含 persona 点评字段 | **默认主入口**，先查新鲜度 |
-| `latest-24h.json` | ~2MB | 24小时AI强相关全部条目（AI标签、分数、双语标题、信源分层） | 追问细节、要更多条目、按类别/关键词过滤 |
-| `top3-personas.json` | ~4KB | 每日TOP3的三种口味点评并排 | 用户要"毒舌一点/换个口味/三种口味对比" |
-| `stories-merged.json` | ~1.4MB | 多源合并后的故事线（importance分层） | 用户问"今天的大事/故事线"，先查新鲜度 |
-| `source-status.json` | ~8KB | 每个信源的健康状态、抓取量、耗时 | 用户问"信源健康/哪些源有料" |
-| `latest-24h-all.json` | ~12MB | 含非AI的全量条目 | 仅用户明确说"全部/包括非AI"才拉，**先提醒体积** |
-| `archive.json` | ~56MB | 全部历史存档 | **默认禁止**。确需历史数据时先告知体积并征得同意 |
+| `daily-brief.json` | ~60KB | 精選20條日報成品，含 persona 點評欄位 | **預設主入口**，先查新鮮度 |
+| `latest-24h.json` | ~2MB | 24小時AI強相關全部條目（AI標籤、分數、雙語標題、資訊來源分層） | 追問細節、要更多條目、按類別/關鍵詞過濾 |
+| `top3-personas.json` | ~4KB | 每日TOP3的三種口味點評並排 | 使用者要"毒舌一點/換個口味/三種口味對比" |
+| `stories-merged.json` | ~1.4MB | 多源合併後的故事線（importance分層） | 使用者問"今天的大事/故事線"，先查新鮮度 |
+| `source-status.json` | ~8KB | 每個資訊來源的健康狀態、抓取量、耗時 | 使用者問"資訊來源健康/哪些源有料" |
+| `latest-24h-all.json` | ~12MB | 含非AI的全量條目 | 僅使用者明確說"全部/包括非AI"才拉，**先提醒體積** |
+| `archive.json` | ~56MB | 全部歷史存檔 | **預設禁止**。確需歷史資料時先告知體積並徵得同意 |
 
-## 第一步永远是新鲜度检查
+## 第一步永遠是新鮮度檢查
 
 任何回答之前，先看 `generated_at`：
 
@@ -44,44 +44,44 @@ curl -s "$BASE_URL/daily-brief.json" -o /tmp/radar-brief.json
 python3 -c "import json;d=json.load(open('/tmp/radar-brief.json'));print(d['generated_at'],d['total_items'])"
 ```
 
-- `daily-brief.json` 超过 **48 小时**未更新：不要用它回答"今天"类问题，降级到 `latest-24h.json`，并说明降级原因。
-- `latest-24h.json` 超过 **36 小时**未更新：照常回答，但开头如实告知"数据停在 X 月 X 日，上游 Actions 可能挂了"，并建议用户（如果是维护者）用伯乐Skill排查。
-- 绝不把过期数据当新鲜数据报给用户。诚实标注数据时间永远是简报的一部分。
+- `daily-brief.json` 超過 **48 小時**未更新：不要用它回答"今天"類問題，降級到 `latest-24h.json`，並說明降級原因。
+- `latest-24h.json` 超過 **36 小時**未更新：照常回答，但開頭如實告知"資料停在 X 月 X 日，上游 Actions 可能掛了"，並建議使用者（如果是維護者）用伯樂Skill排查。
+- 絕不把過期資料當新鮮資料包給使用者。誠實標註資料時間永遠是簡報的一部分。
 
 ## 路由表
 
-| 用户在说 | 走哪 |
+| 使用者在說 | 走哪 |
 |---|---|
-| **默认宽问题**："今天AI圈有什么"、"AI日报"、"过去24小时AI新闻"、"最近AI有啥" | `daily-brief.json`（新鲜度通过时）——精选20条，自带排序和 persona 点评 |
-| 追问细节、"再多来点"、"还有别的吗" | 升级到 `latest-24h.json`，取头部更多条目 |
-| "模型发布"、"AI产品"、"Agent工具"、"论文"、"机器人" | `latest-24h.json` 按 `ai_label` 过滤（映射见下） |
-| "OpenAI最近发了什么"、"Sora相关" | `latest-24h.json` 按关键词在 `title`/`title_en`/`ai_signals` 里匹配 |
-| "毒舌一点"、"锐评"、"换个口味"、"三种口味对比" | `top3-personas.json`——TOP3 三种口味并排 |
-| "今天的大事"、"故事线"、"有什么值得关注的事件" | `stories-merged.json`（新鲜度通过时）按 `importance_score` 取头部 |
-| "哪些信源健康/有料"、"源状态" | `source-status.json` |
-| "全部动态/包括非AI的" | `latest-24h-all.json`（先提醒 ~12MB） |
-| "上周/上个月的AI新闻" | 如实说明：公开数据滚动窗口为24小时，历史需 `archive.json`（56MB），先征得同意再拉 |
+| **預設寬問題**："今天AI圈有什麼"、"AI日報"、"過去24小時AI新聞"、"最近AI有啥" | `daily-brief.json`（新鮮度透過時）——精選20條，自帶排序和 persona 點評 |
+| 追問細節、"再多來點"、"還有別的嗎" | 升級到 `latest-24h.json`，取頭部更多條目 |
+| "模型釋出"、"AI產品"、"Agent工具"、"論文"、"機器人" | `latest-24h.json` 按 `ai_label` 過濾（對映見下） |
+| "OpenAI最近發了什麼"、"Sora相關" | `latest-24h.json` 按關鍵詞在 `title`/`title_en`/`ai_signals` 裡匹配 |
+| "毒舌一點"、"銳評"、"換個口味"、"三種口味對比" | `top3-personas.json`——TOP3 三種口味並排 |
+| "今天的大事"、"故事線"、"有什麼值得關注的事件" | `stories-merged.json`（新鮮度透過時）按 `importance_score` 取頭部 |
+| "哪些資訊來源健康/有料"、"源狀態" | `source-status.json` |
+| "全部動態/包括非AI的" | `latest-24h-all.json`（先提醒 ~12MB） |
+| "上週/上個月的AI新聞" | 如實說明：公開資料滾動視窗為24小時，歷史需 `archive.json`（56MB），先徵得同意再拉 |
 
-`ai_label` 中文映射：`model_release` 模型发布 / `ai_product_update` 产品更新 / `developer_tool` 开发工具 / `agent_workflow` Agent工作流 / `research_paper` 论文研究 / `industry_business` 行业动态 / `infra_compute` 算力与Infra / `robotics` 机器人 / `ai_tech` 技术进展 / `curated_hotlist` 热榜精选 / `ai_general` 综合。
+`ai_label` 中文對映：`model_release` 模型釋出 / `ai_product_update` 產品更新 / `developer_tool` 開發工具 / `agent_workflow` AgentWorkflow / `research_paper` 論文研究 / `industry_business` 行業動態 / `infra_compute` 算力與Infra / `robotics` 機器人 / `ai_tech` 技術進展 / `curated_hotlist` 熱榜精選 / `ai_general` 綜合。
 
-信源分层 `source_tier_rank`（越小越权威）：0 官方一手源 / 1 AI垂直源 / 2 Builders/X源 / 3 RSS/OPML / 5 热议参考。
+資訊來源分層 `source_tier_rank`（越小越權威）：0 官方一手源 / 1 AI垂直源 / 2 Builders/X源 / 3 RSS/OPML / 5 熱議參考。
 
-## Persona 字段（v0.8）
+## Persona 欄位（v0.8）
 
-`daily-brief.json` 的每条 item 可能带三个 persona 字段：
+`daily-brief.json` 的每條 item 可能帶三個 persona 欄位：
 
-- `persona_id`：打分口味的 id（默认 `pragmatic`）
-- `persona_score`：0-100 整数分
-- `persona_review`：一句中文点评（≤40字）
+- `persona_id`：打分口味的 id（預設 `pragmatic`）
+- `persona_score`：0-100 整數分
+- `persona_review`：一句中文點評（≤40字）
 
-**降级模式**（上游没配 LLM Key 时）：只有 `persona_id` 和 `persona_score`（来自规则分），没有 `persona_review`。输出简报时自然跳过点评行即可，不要提"缺失"，也不要自己编一句凑数。
+**降級模式**（上游沒配 LLM Key 時）：只有 `persona_id` 和 `persona_score`（來自規則分），沒有 `persona_review`。輸出簡報時自然跳過點評行即可，不要提"缺失"，也不要自己編一句湊數。
 
 `top3-personas.json` schema：
 
 ```json
 {
   "generated_at": "...",
-  "personas": [{"id": "pragmatic", "name": "实用派"}],
+  "personas": [{"id": "pragmatic", "name": "實用派"}],
   "items": [
     {
       "story_id": "...", "title": "...", "url": "...", "rank": 1,
@@ -95,29 +95,29 @@ python3 -c "import json;d=json.load(open('/tmp/radar-brief.json'));print(d['gene
 }
 ```
 
-口味中文名：`pragmatic` 实用派（默认）/ `cynic` 毒舌评论员 / `paper-police` 较真党。降级模式下 `items` 为空数组——此时如实告知"三口味点评需要上游配置 LLM Key"，退回普通简报。
+口味中文名：`pragmatic` 實用派（預設）/ `cynic` 毒舌評論員 / `paper-police` 較真黨。降級模式下 `items` 為空陣列——此時如實告知"三口味點評需要上游配置 LLM Key"，退回普通簡報。
 
-## 工作流
+## Workflow
 
-**铁律：大文件先下载到 /tmp，用 python3 过滤，绝不把整个 JSON 倒进上下文。** `latest-24h.json` 有 2MB、近千条，直接 cat 会淹没你自己。`daily-brief.json` 只有 ~60KB，可以整读。
+**鐵律：大檔案先下載到 /tmp，用 python3 過濾，絕不把整個 JSON 倒進上下文。** `latest-24h.json` 有 2MB、近千條，直接 cat 會淹沒你自己。`daily-brief.json` 只有 ~60KB，可以整讀。
 
-### 默认路径：日报精选（含 persona 点评）
+### 預設路徑：日報精選（含 persona 點評）
 
 ```bash
 curl -s "$BASE_URL/daily-brief.json" -o /tmp/radar-brief.json
 python3 - <<'EOF'
 import json
 d = json.load(open('/tmp/radar-brief.json'))
-print(f"数据时间: {d['generated_at']} | 精选: {d['total_items']}条")
+print(f"資料時間: {d['generated_at']} | 精選: {d['total_items']}條")
 for i in d['items']:
     line = f"[{i.get('importance_label','')}|{i.get('source_count',1)}源] {i['title']} — {i.get('source_name') or i.get('source','')} — {i['url']}"
     if i.get('persona_review'):
-        line += f"\n    点评({i.get('persona_score')}分): {i['persona_review']}"
+        line += f"\n    點評({i.get('persona_score')}分): {i['persona_review']}"
     print(line)
 EOF
 ```
 
-### 追问细节 / 要更多：升级 24 小时全量
+### 追問細節 / 要更多：升級 24 小時全量
 
 ```bash
 curl -s "$BASE_URL/latest-24h.json" -o /tmp/radar-24h.json
@@ -125,15 +125,15 @@ python3 - <<'EOF'
 import json
 d = json.load(open('/tmp/radar-24h.json'))
 items = d['items_ai']
-# 官方一手源优先，同层按AI相关性分数降序
+# 官方一手源優先，同層按AI相關性分數降序
 top = sorted(items, key=lambda i: (i['source_tier_rank'], -i['ai_score']))[:30]
-print(f"数据时间: {d['generated_at']} | 24h AI条目: {d['total_items']} | 信源: {d['source_count']}个")
+print(f"資料時間: {d['generated_at']} | 24h AI條目: {d['total_items']} | 資訊來源: {d['source_count']}個")
 for i in top:
     print(f"[{i['ai_label']}|{i['source_tier_label']}] {i['title']} — {i['source']} — {i['url']}")
 EOF
 ```
 
-### 按类别过滤（"最近有什么模型发布"）
+### 按類別過濾（"最近有什麼模型釋出"）
 
 ```bash
 python3 - <<'EOF'
@@ -146,12 +146,12 @@ for i in hits[:20]:
 EOF
 ```
 
-### 按关键词（"OpenAI最近发了什么"）
+### 按關鍵詞（"OpenAI最近發了什麼"）
 
 ```bash
 python3 - <<'EOF'
 import json
-KW = 'openai'  # 小写
+KW = 'openai'  # 小寫
 d = json.load(open('/tmp/radar-24h.json'))
 def hit(i):
     blob = ' '.join([i.get('title',''), i.get('title_en') or '', ' '.join(i.get('ai_signals') or [])]).lower()
@@ -162,18 +162,18 @@ for i in hits[:20]:
 EOF
 ```
 
-### 三口味点评（"毒舌一点 / 换个口味"）
+### 三口味點評（"毒舌一點 / 換個口味"）
 
 ```bash
 curl -s "$BASE_URL/top3-personas.json" -o /tmp/radar-top3.json
 python3 - <<'EOF'
 import json
-NAMES = {'pragmatic': '实用派', 'cynic': '毒舌评论员', 'paper-police': '较真党'}
+NAMES = {'pragmatic': '實用派', 'cynic': '毒舌評論員', 'paper-police': '較真黨'}
 d = json.load(open('/tmp/radar-top3.json'))
 if not d.get('items'):
-    print('EMPTY')  # 降级模式：告知需上游配LLM Key，退回普通简报
+    print('EMPTY')  # 降級模式：告知需上游配LLM Key，退回普通簡報
 else:
-    print(f"数据时间: {d['generated_at']}")
+    print(f"資料時間: {d['generated_at']}")
     for it in d['items']:
         print(f"\nTOP{it['rank']} {it['title']} — {it['url']}")
         for pid, r in it.get('reviews', {}).items():
@@ -181,7 +181,7 @@ else:
 EOF
 ```
 
-### 故事线（先过新鲜度）
+### 故事線（先過新鮮度）
 
 ```bash
 curl -s "$BASE_URL/stories-merged.json" -o /tmp/radar-stories.json
@@ -191,7 +191,7 @@ d = json.load(open('/tmp/radar-stories.json'))
 gen = datetime.datetime.fromisoformat(d['generated_at'].replace('Z','+00:00'))
 age_h = (datetime.datetime.now(datetime.timezone.utc) - gen).total_seconds()/3600
 if age_h > 48:
-    print(f"STALE:{age_h:.0f}h")  # 看到STALE就降级走latest-24h.json，不要硬用
+    print(f"STALE:{age_h:.0f}h")  # 看到STALE就降級走latest-24h.json，不要硬用
 else:
     top = sorted(d['stories'], key=lambda s: -s['importance_score'])[:15]
     for s in top:
@@ -199,71 +199,71 @@ else:
 EOF
 ```
 
-### 信源健康（"哪些源有料"）
+### 資訊來源健康（"哪些源有料"）
 
 ```bash
 curl -s "$BASE_URL/source-status.json" -o /tmp/radar-status.json
 python3 - <<'EOF'
 import json
 d = json.load(open('/tmp/radar-status.json'))
-print(f"成功:{d['successful_sites']} 失败:{d['failed_sites']} 零产出:{d['zero_item_sites']}")
+print(f"成功:{d['successful_sites']} 失敗:{d['failed_sites']} 零產出:{d['zero_item_sites']}")
 for s in d['sites']:
     flag = 'OK' if s['ok'] else 'FAIL'
-    print(f"[{flag}] {s['site_name']}: {s['item_count']}条")
+    print(f"[{flag}] {s['site_name']}: {s['item_count']}條")
 EOF
 ```
 
-## 输出格式
+## 輸出格式
 
-整理成中文简报，结构：
+整理成中文簡報，結構：
 
 ```markdown
-# AI雷达简报 · [日期]
+# AI雷達簡報 · [日期]
 
-> 数据窗口: 过去24小时 | 数据时间: [generated_at转为人话] | [N]条精选 / [M]个信源
+> 資料視窗: 過去24小時 | 資料時間: [generated_at轉為人話] | [N]條精選 / [M]個資訊來源
 
-## 模型发布
-- **[标题]** — [来源] ([信源层级])
-  [一句话说明，有原文链接]
-  > [口味中文名] [persona_score]分：[persona_review]   ← 有 persona_review 才输出这行，没有就整行跳过
+## 模型釋出
+- **[標題]** — [來源] ([資訊來源層級])
+  [一句話說明，有原文連結]
+  > [口味中文名] [persona_score]分：[persona_review]   ← 有 persona_review 才輸出這行，沒有就整行跳過
 
-## 产品与工具
+## 產品與工具
 - ...
 
 ## 值得注意
-- [热议参考层里讨论度高的1-3条]
+- [熱議參考層裡討論度高的1-3條]
 ```
 
-简报规则：
+簡報規則：
 
-- 每条必须带原文 `url`，用户要深挖时直接点。
-- 官方一手源的条目优先展示，热议参考只做"值得注意"的补充，不混排。
-- 标题有 `title_zh` 用中文，原文是英文时可用 `title_bilingual`。
-- 条数克制：默认10-20条，宁缺毋滥。用户要更多再加。
-- persona 点评行只在字段存在时输出，降级模式下自然省略，不解释不凑数。
-- 文末永远标注数据时间。数据过期时开头就说，不藏。
+- 每條必須帶原文 `url`，使用者要深挖時直接點。
+- 官方一手源的條目優先展示，熱議參考只做"值得注意"的補充，不混排。
+- 標題有 `title_zh` 用中文，原文是英文時可用 `title_bilingual`。
+- 條數剋制：預設10-20條，寧缺毋濫。使用者要更多再加。
+- persona 點評行只在欄位存在時輸出，降級模式下自然省略，不解釋不湊數。
+- 文末永遠標註資料時間。資料過期時開頭就說，不藏。
 
-## 失败模式
+## 失敗模式
 
-- **Pages 404 / 网络失败**：换 raw 地址重试一次：`https://raw.githubusercontent.com/LearnPrompt/ai-news-radar/master/data/latest-24h.json`。还不行就如实告知，不要编造新闻。
-- **数据过期**：见"新鲜度检查"。照常回答 + 显著标注 + 建议维护者排查。
-- **top3-personas.json 为空**：降级模式，如实说明三口味点评需要上游配 LLM Key，退回普通简报。
-- **某类别为空**（如当天没有论文）：如实说"过去24小时雷达里没有论文类条目"，不要拿别的类别凑数。
-- **用户问的东西不在24小时窗口里**：说明窗口限制，给出 archive 选项（含体积警告），不要假装查过历史。
+- **Pages 404 / 網路失敗**：換 raw 地址重試一次：`https://raw.githubusercontent.com/LearnPrompt/ai-news-radar/master/data/latest-24h.json`。還不行就如實告知，不要編造新聞。
+- **資料過期**：見"新鮮度檢查"。照常回答 + 顯著標註 + 建議維護者排查。
+- **top3-personas.json 為空**：降級模式，如實說明三口味點評需要上游配 LLM Key，退回普通簡報。
+- **某類別為空**（如當天沒有論文）：如實說"過去24小時雷達裡沒有論文類條目"，不要拿別的類別湊數。
+- **使用者問的東西不在24小時視窗裡**：說明視窗限制，給出 archive 選項（含體積警告），不要假裝查過歷史。
 
-## 想换信源或口味？升级路径
+## 想換資訊來源或口味？升級路徑
 
-本 Skill 只读数据。如果用户说"我想加个源/换个点评口味/做自己的雷达"：
+本 Skill 只讀資料。如果使用者說"我想加個源/換個點評口味/做自己的雷達"：
 
 1. fork `https://github.com/LearnPrompt/ai-news-radar`；
-2. 信源：用仓库里的**伯乐Skill**（`skills/ai-news-radar/`）录入和判断信源、部署 GitHub Pages；口味：改 `personas/` 目录下的 markdown 文件；
-3. 回到本 Skill，把顶部 `BASE_URL` 那一行指向自己的 Pages。
+2. 資訊來源：用倉庫裡的**伯樂Skill**（`skills/ai-news-radar/`）錄入和判斷資訊來源、部署 GitHub Pages；口味：改 `personas/` 目錄下的 markdown 檔案；
+3. 回到本 Skill，把頂部 `BASE_URL` 那一行指向自己的 Pages。
 
-信源你选，口味你调，数据归你，本 Skill 继续帮你读。
+資訊來源你選，口味你調，資料歸你，本 Skill 繼續幫你讀。
 
-## 安全边界
+## 安全邊界
 
-- 只做 GET，只读公开静态文件，不发任何写请求。
+- 只做 GET，只讀公開靜態檔案，不發任何寫請求。
 - 不需要也不接受任何 API Key、token、cookie。
-- 不抓取需要登录的页面；用户给的私有源建议走伯乐Skill的私有OPML/AgentMail路径。
-- 引用条目时保留原始链接，不改写来源归属。
+- 不抓取需要登入的頁面；使用者給的私有源建議走伯樂Skill的私有OPML/AgentMail路徑。
+- 引用條目時保留原始連結，不改寫來源歸屬。

@@ -1,7 +1,7 @@
 # Riley Brown + AlphaSignal Advanced Source Demo
 
 Date: 2026-05-11
-Scope: a one-account X API demo and one-newsletter AgentMail demo for AI News Radar / 伯乐Skill onboarding.
+Scope: a one-account X API demo and one-newsletter AgentMail demo for AI News Radar / 伯樂Skill onboarding.
 
 ## Goal
 

@@ -272,9 +272,9 @@ button {
   align-items: center;
 }
 
-/* 清除筛选按钮 hidden 时，隐藏项仍会占用第4列的 gap track，
-   导致本行右边缘比 .section-tabs 短一个 gap 宽度——收窄为 3 列补齐右边缘。
-   只在桌面生效：760px 以下 .primary-controls 是另一套 2 列/整行布局，不受此问题影响。 */
+/* 清除篩選按鈕 hidden 時，隱藏項仍會佔用第4列的 gap track，
+   導致本行右邊緣比 .section-tabs 短一個 gap 寬度——收窄為 3 列補齊右邊緣。
+   只在桌面生效：760px 以下 .primary-controls 是另一套 2 列/整行佈局，不受此問題影響。 */
 @media (min-width: 761px) {
   .primary-controls:has(> .clear-filters-btn[hidden]) {
     grid-template-columns: auto minmax(0, 1fr) auto;
@@ -711,7 +711,7 @@ summary:focus-visible {
   background: var(--surface);
 }
 
-/* 双色交替：WaytoAGI 版块用深一档的底色，与伯乐精选 / AI信号流形成节奏感 */
+/* 雙色交替：WaytoAGI 版塊用深一檔的底色，與伯樂精選 / AI訊號流形成節奏感 */
 .waytoagi-wrap {
   background: var(--bg-alt);
   border-color: rgba(23, 23, 23, 0.12);
@@ -729,7 +729,7 @@ summary:focus-visible {
   background: var(--surface);
 }
 
-/* WaytoAGI header 用对应的深档底色 */
+/* WaytoAGI header 用對應的深檔底色 */
 .waytoagi-head {
   background: var(--surface-alt);
   border-bottom-color: rgba(23, 23, 23, 0.1);
@@ -1362,7 +1362,7 @@ summary:focus-visible {
   border-radius: var(--radius);
   padding: 8px 10px;
   color: var(--ink);
-  background: var(--surface);   /* alt 版块里卡片用纯白，形成内部层次 */
+  background: var(--surface);   /* alt 版塊裡卡片用純白，形成內部層次 */
 }
 
 .waytoagi-item .d {
@@ -1625,8 +1625,8 @@ summary:focus-visible {
   }
 }
 
-/* 入场动画只做位移、不碰透明度：后台/冻结页面里动画不启动时，
-   元素最多偏移几像素但始终可见，绝不会像 opacity 动画那样被困在透明态。 */
+/* 入場動畫只做位移、不碰透明度：後臺/凍結頁面裡動畫不啟動時，
+   元素最多偏移幾畫素但始終可見，絕不會像 opacity 動畫那樣被困在透明態。 */
 @media (prefers-reduced-motion: no-preference) {
   @keyframes card-enter {
     from {
@@ -1650,9 +1650,9 @@ summary:focus-visible {
 }
 
 /* ============================================================
-   Persona 三味点评（v0.8）
-   只用既有变量：--accent / --ink-soft / --muted / --line / --surface
-   红线：0 圆角、1px 实线边框、单一 accent 色
+   Persona 三味點評（v0.8）
+   只用既有變數：--accent / --ink-soft / --muted / --line / --surface
+   紅線：0 圓角、1px 實線邊框、單一 accent 色
    ============================================================ */
 
 .story-persona {
@@ -1732,22 +1732,22 @@ summary:focus-visible {
   }
 }
 
-/* ---- AIHOT 式单层信息架构：热点排行区 + 共享卡片组件（v0.9 重构）---- */
-/* 红线：单强调色 var(--accent)、0 圆角、1px 边框、无渐变无阴影 */
+/* ---- AIHOT 式單層資訊架構：熱點排行區 + 共享卡片元件（v0.9 重構）---- */
+/* 紅線：單強調色 var(--accent)、0 圓角、1px 邊框、無漸變無陰影 */
 
 .hot-board-list {
   display: flex;
   flex-direction: column;
 }
 
-/* 今日 TOP3 板块：复用完整精选卡片（含三口味并排面板），卡片间留缝即可 */
+/* 今日 TOP3 板塊：複用完整精選卡片（含三口味並排面板），卡片間留縫即可 */
 .top3-board-list {
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
 
-/* 热点排行区：一行一条（AIHOT 式），不复用下方精选列表的完整卡片，避免摘要/标签重复展示 */
+/* 熱點排行區：一行一條（AIHOT 式），不復用下方精選列表的完整卡片，避免摘要/標籤重複展示 */
 .hot-row {
   display: flex;
   align-items: center;
@@ -1791,7 +1791,7 @@ summary:focus-visible {
   white-space: nowrap;
 }
 
-/* 精选/全量全局开关，紧挨搜索框；min-width 与 .section-tabs 的 全部/模型 按钮宽度对齐 */
+/* 精選/全量全域性開關，緊挨搜尋框；min-width 與 .section-tabs 的 全部/模型 按鈕寬度對齊 */
 .curation-mode-switch .mode-btn {
   display: inline-flex;
   align-items: center;
@@ -1805,7 +1805,7 @@ summary:focus-visible {
   opacity: 0.82;
 }
 
-/* 日期分组条：坐在时间轴左侧，作为轴上的日期锚点；日期 + 星期/条数（弱化） */
+/* 日期分組條：坐在時間軸左側，作為軸上的日期錨點；日期 + 星期/條數（弱化） */
 .date-group-header {
   margin-top: 4px;
   padding: 10px 12px 6px;
@@ -1829,13 +1829,13 @@ summary:focus-visible {
   font-weight: 400;
 }
 
-/* 主列表时间轴：左侧 rail（时间点 + 竖线）+ 右侧卡片，精选/全量共用。
-   卡片间距用 .timeline-item 的 padding-bottom（而非卡片 margin-bottom），
-   这样竖线伪元素（挂在 .timeline-item 上）top:0/bottom:0 覆盖 padding 区域，
-   在卡片之间的间隙里也保持连续，不会断线。
-   父容器 #newsList 的 grid gap 是 8px，这段间隙不属于 .timeline-item 自身的盒子，
-   ::before 覆盖不到——用 :has(+ .timeline-item) 让竖线多探出 8px 桥接过去，
-   卡片间总间距 = padding-bottom(8px) + grid gap(8px) = 16px。 */
+/* 主列表時間軸：左側 rail（時間點 + 豎線）+ 右側卡片，精選/全量共用。
+   卡片間距用 .timeline-item 的 padding-bottom（而非卡片 margin-bottom），
+   這樣豎線偽元素（掛在 .timeline-item 上）top:0/bottom:0 覆蓋 padding 區域，
+   在卡片之間的間隙裡也保持連續，不會斷線。
+   父容器 #newsList 的 grid gap 是 8px，這段間隙不屬於 .timeline-item 自身的盒子，
+   ::before 覆蓋不到——用 :has(+ .timeline-item) 讓豎線多探出 8px 橋接過去，
+   卡片間總間距 = padding-bottom(8px) + grid gap(8px) = 16px。 */
 .timeline-item {
   position: relative;
   display: grid;
@@ -1855,7 +1855,7 @@ summary:focus-visible {
   transform: translateX(-50%);
 }
 
-/* 同一日期分组内，前一项后面紧跟着另一项时，桥接父容器的 8px grid gap，让竖线不断 */
+/* 同一日期分組內，前一項後面緊跟著另一項時，橋接父容器的 8px grid gap，讓豎線不斷 */
 .timeline-item:has(+ .timeline-item)::before {
   bottom: -8px;
 }
@@ -1898,8 +1898,8 @@ summary:focus-visible {
   }
 }
 
-/* 共享卡片组件：主列表基础卡片，嵌在 .timeline-item 右侧。
-   AIHOT 参考图里每条是漂浮在轴线旁的独立白卡：边框 + 圆角 + 极轻阴影。 */
+/* 共享卡片元件：主列表基礎卡片，嵌在 .timeline-item 右側。
+   AIHOT 參考圖裡每條是漂浮在軸線旁的獨立白卡：邊框 + 圓角 + 極輕陰影。 */
 .news-card {
   position: relative;
   display: flex;
@@ -1973,9 +1973,9 @@ summary:focus-visible {
   display: none;
 }
 
-/* 同一事件展开：时间线卡片内联子列表 + 热点行内联子列表，共用同一套行样式。
-   触发器现在是 meta-row 里的 .multi-chip（时间线卡片）/ .hot-row-source-toggle（热点行）。
-   红线：单强调色 var(--accent)、0 圆角、1px 边框，不新增色彩。 */
+/* 同一事件展開：時間線卡片內聯子列表 + 熱點行內聯子列表，共用同一套行樣式。
+   觸發器現在是 meta-row 裡的 .multi-chip（時間線卡片）/ .hot-row-source-toggle（熱點行）。
+   紅線：單強調色 var(--accent)、0 圓角、1px 邊框，不新增色彩。 */
 .event-expand-list {
   display: grid;
   gap: 6px;
@@ -1984,9 +1984,9 @@ summary:focus-visible {
   border-top: 1px solid var(--line-soft);
 }
 
-/* [hidden] 属性的优先级低于同 specificity 的作者样式（origin 优先于 specificity），
-   .event-expand-list 的 display: grid 会盖掉 UA 自带的 [hidden]{display:none}，
-   导致 multi-chip 第二次点击设 hidden=true 后列表仍然可见。显式声明覆盖修复。 */
+/* [hidden] 屬性的優先順序低於同 specificity 的作者樣式（origin 優先於 specificity），
+   .event-expand-list 的 display: grid 會蓋掉 UA 自帶的 [hidden]{display:none}，
+   導致 multi-chip 第二次點選設 hidden=true 後列表仍然可見。顯式宣告覆蓋修復。 */
 .event-expand-list[hidden] {
   display: none;
 }
@@ -2024,7 +2024,7 @@ summary:focus-visible {
   white-space: nowrap;
 }
 
-/* 热点行的信源数变成按钮：子列表插在 .hot-row 正下方，作为独立一行，靠标题列缩进对齐 */
+/* 熱點行的資訊來源數變成按鈕：子列表插在 .hot-row 正下方，作為獨立一行，靠標題列縮排對齊 */
 .hot-row-source-toggle {
   border: 0;
   background: transparent;
@@ -2047,7 +2047,7 @@ summary:focus-visible {
   border-top: 1px solid rgba(23, 23, 23, 0.06);
 }
 
-/* DATA_BASE_URL 数据同源开关：非空时展示一行提示 + 恢复本地按钮 */
+/* DATA_BASE_URL 資料同源開關：非空時展示一行提示 + 恢復本地按鈕 */
 .data-source-indicator {
   display: flex;
   flex-wrap: wrap;

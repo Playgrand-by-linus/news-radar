@@ -286,19 +286,19 @@ CREATOR_FRESHNESS_BONUS_POINTS = 15.0
 CREATOR_SITE_IDS = frozenset({"tikhub_douyin", "tikhub_xiaohongshu"})
 # --- TikHub search ranking / time-window tuning (edit here, no env var needed) ---
 # Exact recency window for TikHub results, in days. Douyin/Xiaohongshu search
-# only expose coarse buckets (不限/一天内/一周内/半年内), so we ask the API for
-# 一周内 and then enforce the exact current-week window in code.
+# only expose coarse buckets (不限/一天內/一週內/半年內), so we ask the API for
+# 一週內 and then enforce the exact current-week window in code.
 TIKHUB_RECENCY_DAYS = 7              # keep only current-week posts
 # Douyin fetch_general_search_v2 enums (standard Douyin search filter):
-#   sort_type:    0=综合, 1=最多点赞(most likes), 2=最新
-#   publish_time: 0=不限, 1=一天内, 7=一周内, 180=半年内
+#   sort_type:    0=綜合, 1=最多點贊(most likes), 2=最新
+#   publish_time: 0=不限, 1=一天內, 7=一週內, 180=半年內
 TIKHUB_DOUYIN_SORT_TYPE = "1"        # 最多点赞 / most likes
 TIKHUB_DOUYIN_PUBLISH_TIME = "7"     # 一周内; real cap = TIKHUB_RECENCY_DAYS
 # Xiaohongshu search. app_v2 uses the app's filter labels; sort uses the
 # popularity/time/general tokens (web_v3 already takes "time_descending").
-#   sort:        general(综合) / time_descending(最新) / popularity_descending(最多点赞/最热)
+#   sort:        general(綜合) / time_descending(最新) / popularity_descending(最多點贊/最熱)
 #   note_type:   "不限"(app_v2, all) ; web_v3 uses 0 for "all"
-#   time_filter: "不限" / "一天内" / "一周内" / "半年内"
+#   time_filter: "不限" / "一天內" / "一週內" / "半年內"
 TIKHUB_XHS_SORT = "popularity_descending"  # 最多点赞 / most likes
 TIKHUB_XHS_NOTE_TYPE = "不限"               # all note types
 TIKHUB_XHS_TIME_FILTER = "一周内"           # 一周内; real cap = TIKHUB_RECENCY_DAYS
@@ -3648,8 +3648,8 @@ def fetch_socialdata_search(
     if len(query) > SOCIALDATA_MAX_QUERY_CHARS:
         raise ValueError("socialdata_query_too_long")
     capped_max_results = max(1, min(int(max_results or SOCIALDATA_DEFAULT_MAX_RESULTS), 100))
-    # 默认 Top:Latest 返回的是 API 调用瞬间刚发出的推文,一批的原帖时间挤在同一分钟,
-    # 时间轴上表现为同分钟刷屏;Top 按热度返回时间窗内的推文,原帖时间自然散布。
+    # 預設 Top:Latest 返回的是 API 呼叫瞬間剛發出的推文,一批的原帖時間擠在同一分鐘,
+    # 時間軸上表現為同分鍾刷屏;Top 按熱度返回時間窗內的推文,原帖時間自然散佈。
     effective_search_type = search_type if search_type in {"Latest", "Top"} else "Top"
     out: list[RawItem] = []
     raw_tweet_count = 0
@@ -4203,7 +4203,7 @@ def parse_tikhub_douyin_items(payload: dict[str, Any], now: datetime, keyword: s
     for node in iter_nested_dicts(payload):
         # TikHub wraps real videos in ``aweme_info``. Walking arbitrary nested
         # dictionaries without this guard also reaches ``music`` objects, whose
-        # generic titles look like "@…创作的原声" and are not video titles.
+        # generic titles look like "@…創作的原聲" and are not video titles.
         wrapped_aweme = node.get("aweme_info") if isinstance(node.get("aweme_info"), dict) else None
         aweme = wrapped_aweme or node
         if not isinstance(aweme, dict):
@@ -4719,7 +4719,7 @@ ZH_CACHE_DS_PREFIX = "ds1|"
 
 TRANSLATION_GLOSSARY_FILENAME = "translation-glossary.txt"
 
-# 进程级词表缓存：None 表示尚未加载，加载后为 (protected_terms, repairs)。
+# 程序級詞表快取：None 表示尚未載入，載入後為 (protected_terms, repairs)。
 _GLOSSARY_CACHE: tuple[list[str], list[tuple[str, str, str | None]]] | None = None
 
 
@@ -4837,40 +4837,40 @@ def repair_zh_title_translation(original: str, translated: str) -> str:
         result = result.replace("存储库", "代码仓库")
     if re.search(r"\bdesktop app\b", source, re.I):
         result = result.replace("桌面应用程序", "桌面应用")
-    # 模型架构 Transformer 被译成电影名；排除原文明显在谈电影/玩具的场景防误伤。
+    # 模型架構 Transformer 被譯成電影名；排除原文明顯在談電影/玩具的場景防誤傷。
     if re.search(r"\btransformers?\b", source, re.I) and not re.search(
         r"\b(movie|film|trailer|hasbro|toy)\b", source, re.I
     ):
         result = result.replace("变形金刚", "Transformer")
-    # 公司名 Hugging Face 被直译；仅当原文出现该公司名时才替换。
+    # 公司名 Hugging Face 被直譯；僅當原文出現該公司名時才替換。
     if re.search(r"\bHugging\s*Face\b", source, re.I):
         result = result.replace("拥抱脸", "Hugging Face").replace("抱抱脸", "Hugging Face")
-    # 公司名 OpenAI 偶尔被拆词直译；"开放人工智能"日常中文几乎不用，误伤面小。
+    # 公司名 OpenAI 偶爾被拆詞直譯；"開放人工智慧"日常中文幾乎不用，誤傷面小。
     if re.search(r"\bOpenAI\b", source, re.I):
         result = result.replace("开放人工智能", "OpenAI")
-    # 公司名 Anthropic 被误译为哲学词；仅替换"人择"这类专有误译，不动泛指"人类"的句子。
+    # 公司名 Anthropic 被誤譯為哲學詞；僅替換"人擇"這類專有誤譯，不動泛指"人類"的句子。
     if re.search(r"\bAnthropic\b", source, re.I):
         result = result.replace("人择", "Anthropic").replace("人类学公司", "Anthropic")
-    # 媒体名 The Information 被译成普通名词；只替换书名号/报社式误译，避免动正文里的"信息"。
+    # 媒體名 The Information 被譯成普通名詞；只替換書名號/報社式誤譯，避免動正文裡的"資訊"。
     if re.search(r"\bThe Information\b", source):
         result = result.replace("《信息》", "The Information").replace("信息报", "The Information")
-    # 模型名 Gemini 被译成星座；AI 信源里原文含 Gemini 基本都指模型。
+    # 模型名 Gemini 被譯成星座；AI 資訊來源裡原文含 Gemini 基本都指模型。
     if re.search(r"\bGemini\b", source):
         result = result.replace("双子座", "Gemini")
-    # 模型名 Llama 被译成动物名；仅当原文点名 Llama 时替换。
+    # 模型名 Llama 被譯成動物名；僅當原文點名 Llama 時替換。
     if re.search(r"\bLlama\b", source, re.I):
         result = result.replace("骆驼", "Llama").replace("羊驼", "Llama")
-    # 产品名 Copilot 被直译；仅当原文出现 Copilot 时替换，不影响航空语境。
+    # 產品名 Copilot 被直譯；僅當原文出現 Copilot 時替換，不影響航空語境。
     if re.search(r"\bCopilot\b", source, re.I):
         result = result.replace("副驾驶", "Copilot")
-    # 产品名 Cursor 被译成"光标"；仅当原文以大写 Cursor 出现（产品名写法）时替换。
+    # 產品名 Cursor 被譯成"游標"；僅當原文以大寫 Cursor 出現（產品名寫法）時替換。
     if re.search(r"\bCursor\b", source):
         result = result.replace("光标", "Cursor")
-    # 公司名 Perplexity 被译成"困惑"；大小写敏感匹配，避免误伤指标含义的 perplexity。
+    # 公司名 Perplexity 被譯成"困惑"；大小寫敏感匹配，避免誤傷指標含義的 perplexity。
     if re.search(r"\bPerplexity\b", source):
         result = result.replace("困惑", "Perplexity")
-    # 词表修正规则（translation-glossary.txt）：guard 语义与上面硬编码规则一致——
-    # 只有英文原标题包含 guard 关键词才替换，防误伤。
+    # 詞表修正規則（translation-glossary.txt）：guard 語義與上面硬編碼規則一致——
+    # 只有英文原標題包含 guard 關鍵詞才替換，防誤傷。
     _, glossary_repairs = _get_translation_glossary()
     for bad, good, guard in glossary_repairs:
         if bad not in result:
@@ -4878,7 +4878,7 @@ def repair_zh_title_translation(original: str, translated: str) -> str:
         if guard and not re.search(re.escape(guard), source, re.I):
             continue
         result = result.replace(bad, good)
-        # 替换目标为纯 ASCII 术语时，清理机翻残留的紧贴书名号，如《Fable 5》→ Fable 5。
+        # 替換目標為純 ASCII 術語時，清理機翻殘留的緊貼書名號，如《Fable 5》→ Fable 5。
         if good.isascii():
             result = re.sub(r"《(" + re.escape(good) + r"[^《》]*)》", r"\1", result)
     return result
@@ -5004,8 +5004,8 @@ def add_bilingual_fields(
                 zh_title = cached_ds
                 cache_hit_key = ds_key
             elif not has_ds_key:
-                # 谷歌时代的裸 key 旧缓存只在 DeepSeek 不可用时兜底命中；
-                # 有 key 时视为 miss，触发 DeepSeek 重译逐步替换旧翻译。
+                # 谷歌時代的裸 key 舊快取只在 DeepSeek 不可用時Fallback命中；
+                # 有 key 時視為 miss，觸發 DeepSeek 重譯逐步替換舊翻譯。
                 cached_google = cache.get(title)
                 if cached_google and is_valid_zh_translation(title, cached_google, strict=False):
                     zh_title = cached_google
@@ -5915,8 +5915,8 @@ def build_story_record(
     score = importance["score"]
     category = story_category(score, primary, len(items))
     times = [ts for ts in (event_time(item) for item in sorted_items) if ts]
-    # 与前端 timelineIso 的未来时间防御对齐：错标时区的条目漏到 story 层时，
-    # earliest_at/latest_at 不得超过当前时间（精选模式排序/展示走的是这两个字段）
+    # 與前端 timelineIso 的未來時間防禦對齊：錯標時區的條目漏到 story 層時，
+    # earliest_at/latest_at 不得超過當前時間（精選模式排序/展示走的是這兩個欄位）
     story_future_limit = now + timedelta(minutes=10)
     times = [ts if ts <= story_future_limit else now for ts in times]
     source_refs = [story_item_link(item) for item in sorted_items]

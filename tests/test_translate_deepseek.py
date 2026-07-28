@@ -225,8 +225,8 @@ class TestGlossaryParsing(unittest.TestCase):
         self.assertIn("Claude", terms)
         self.assertIn("LLM", terms)
         bads = [bad for bad, _, _ in repairs]
-        self.assertIn("法学硕士（LLM）", bads)
-        self.assertIn("克劳德", bads)
+        self.assertIn("法學碩士（LLM）", bads)
+        self.assertIn("克勞德", bads)
         self.assertIn("神鬼寓言", bads)
 
 
@@ -250,12 +250,12 @@ class TestGlossaryRepairCacheHit(unittest.TestCase):
         return items[0]["title_zh"]
 
     def test_llm_burnout_repaired(self):
-        zh = self.run_cached("How to survive LLM burnout", "法学硕士（LLM）倦怠症生存指南")
+        zh = self.run_cached("How to survive LLM burnout", "法學碩士（LLM）倦怠症生存指南")
         self.assertIn("LLM", zh)
-        self.assertNotIn("法学硕士", zh)
+        self.assertNotIn("法學碩士", zh)
 
     def test_claude_repaired(self):
-        zh = self.run_cached("Claude ships a new feature", "克劳德推出新功能")
+        zh = self.run_cached("Claude ships a new feature", "克勞德推出新功能")
         self.assertIn("Claude", zh)
         self.assertNotIn("克劳德", zh)
 

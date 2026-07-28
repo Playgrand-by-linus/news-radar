@@ -141,8 +141,8 @@ jobs:
             exit 0
           fi
           git commit -m "chore: update ai news snapshot"
-          # 运行期间有人推了同分支时裸 push 会被拒(non-fast-forward),整轮数据白跑。
-          # rebase 到最新远端再推,最多重试 3 次;数据文件都是本轮生成的快照,rebase 无冲突风险。
+          # 執行期間有人推了同分支時裸 push 會被拒(non-fast-forward),整輪資料白跑。
+          # rebase 到最新遠端再推,最多重試 3 次;資料檔案都是本輪生成的快照,rebase 無衝突風險。
           for attempt in 1 2 3; do
             git push && exit 0
             echo "push rejected (attempt $attempt), rebasing onto latest remote..."
