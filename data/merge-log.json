@@ -1,22 +1,8 @@
 {
-  "generated_at": "2026-08-10T06:41:51.152435Z",
+  "generated_at": "2026-08-10T08:51:02.553898Z",
   "merge_strategy": "url_or_title_similarity_v0_6",
-  "total_events": 23,
+  "total_events": 24,
   "events": [
-    {
-      "story_id": "story_b435d77dc108",
-      "item_id": "9c4cf3ed4f10036b42fc8c84a568dffeb72fd36f",
-      "merged_into": "story_b435d77dc108",
-      "reason": "canonical_url",
-      "similarity": 1.0
-    },
-    {
-      "story_id": "story_b435d77dc108",
-      "item_id": "6698514cdb0575f59fac59a74c7965f03cd1189d",
-      "merged_into": "story_b435d77dc108",
-      "reason": "title_similarity",
-      "similarity": 0.8905
-    },
     {
       "story_id": "story_67d5e9ec1941",
       "item_id": "67cf4ee790ddcb581b86d085711406dbfa91294c",
@@ -74,6 +60,13 @@
       "similarity": 1.0
     },
     {
+      "story_id": "story_fe7d41da32c5",
+      "item_id": "909fdbb355982377fbbae7f77736dffdc6be690d",
+      "merged_into": "story_fe7d41da32c5",
+      "reason": "canonical_url",
+      "similarity": 1.0
+    },
+    {
       "story_id": "story_4503613082a3",
       "item_id": "67e5d1c393262bf02ec860a788ad1b7739d58e51",
       "merged_into": "story_4503613082a3",
@@ -123,6 +116,13 @@
       "similarity": 1.0
     },
     {
+      "story_id": "story_db693db10af6",
+      "item_id": "b9b1454acf8d39a8829479ee1624a3959b0ce0f8",
+      "merged_into": "story_db693db10af6",
+      "reason": "canonical_url",
+      "similarity": 1.0
+    },
+    {
       "story_id": "story_cca82cecf2ae",
       "item_id": "0801e6b357a97132dd8026d429ec2454828f70ab",
       "merged_into": "story_cca82cecf2ae",
@@ -162,6 +162,13 @@
       "item_id": "32e19295643205bc99c048a54501bbb609d2ee7c",
       "merged_into": "story_e8e5fbc0889d",
       "reason": "title_similarity",
+      "similarity": 1.0
+    },
+    {
+      "story_id": "story_d10e608ddfc9",
+      "item_id": "ca1faf9ac0d638700e0b67788edc7f13be0bb07a",
+      "merged_into": "story_d10e608ddfc9",
+      "reason": "canonical_url",
       "similarity": 1.0
     }
   ]
