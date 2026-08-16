@@ -212,7 +212,7 @@ AI News Radar學習了現代新聞學的技術，不是簡單堆資訊源，一�
 ## Fork 指南：五步擁有自己的雷達
 
 1. **Fork** [LearnPrompt/ai-news-radar](https://github.com/LearnPrompt/ai-news-radar)。
-2. **開 Actions**：fork 後 GitHub 預設暫停 workflow，去 Actions 頁點一下啟用，`update-news.yml` 每30分鐘自動跑。
+2. **開 Actions**：fork 後 GitHub 預設暫停 workflow，去 Actions 頁點一下啟用，`update-news.yml` 每小時自動跑。
 3. **（可選）配 `DEEPSEEK_API_KEY`**：Settings → Secrets and variables → Actions 加一個 secret，就能獲得 persona 銳評、標題增強、精選條目的真實推薦理由，以及更可靠的中文標題翻譯（拒答文案和退化輸出會自動回退原標題）。不配也全流程能跑，自動降級成規則分、原始標題加谷歌翻譯，推薦理由區塊直接不顯示。預設模型是 `deepseek-v4-flash`，需要換模型可以另配一個 Variable `DEEPSEEK_MODEL` 覆蓋。想控制每次執行改寫多少條標題，可以再配一個 `TITLE_ENHANCE_MAX_PER_RUN`（不配預設 30）。
 4. **開 GitHub Pages**：Settings → Pages，選 master 分支根目錄。幾分鐘後你的雷達就活了。
 5. **改 skill 一行**：把 `skills/radar/SKILL.md` 頂部的 `BASE_URL` 換成 `https://<你的使用者名稱>.github.io/ai-news-radar/data`，你的 Agent 從此讀你自己的資料。
@@ -275,7 +275,7 @@ python scripts/update_news.py --output-dir data --window-hours 24 --rss-opml fee
 `.github/workflows/update-news.yml` 已經配置好定時任務。
 
 - 支援手動觸發 `workflow_dispatch`；需要忽略 TikHub 的正常付費源間隔時，顯式傳入 `force_tikhub=true`
-- 預設每 30 分鐘執行一次：`*/30 * * * *`
+- 預設每小時執行一次：`17 * * * *`
 - 自動生成並提交 `data/*.json`；Workflow使用 `git add data/`，避免新增 JSON 檔案因為白名單遺漏而停留在舊更新時間
 - 如果設定 `DEEPSEEK_API_KEY`，會給每日精選打 persona 分、生成三口味 TOP3 點評、啟用標題增強、生成精選條目的真實推薦理由，並給出更可靠的中文翻譯（拒答文案和退化輸出會自動回退原標題）；不設定時自動降級為規則分、原始標題和谷歌翻譯，推薦理由區塊不顯示，核心流程照樣跑
 - 預設 DeepSeek 模型是 `deepseek-v4-flash`（DeepSeek 官方將於 2026-07-24 棄用 `deepseek-chat` 別名），可以設定倉庫 Variable `DEEPSEEK_MODEL` 覆蓋
@@ -287,7 +287,7 @@ python scripts/update_news.py --output-dir data --window-hours 24 --rss-opml fee
 - 如果設定 `X_API_ENABLED=1`、`X_BEARER_TOKEN` 和預算變數，會在每日指定UTC視窗用官方X API抓取少量公開Post；預設關閉，且當前X API按返回資源計費
 - 如果設定 `SOCIALDATA_ENABLED=1`、`SOCIALDATA_API_KEY` 和預算變數，會按 `SOCIALDATA_RUN_INTERVAL_HOURS`（預設12小時）透過 SocialData.tools 抓取少量公開 X/Twitter 搜尋結果；預設關閉，API Key 只應放在本地環境變數或 GitHub Secrets
 - 如果設定 `TIKHUB_ENABLED=1`、`TIKHUB_API_KEY` 和預算變數，會按 `TIKHUB_RUN_INTERVAL_HOURS`（預設24小時）透過 TikHub 抓取少量抖音/小紅書關鍵詞搜尋結果；預設關閉，API Key 只應放在本地環境變數或 GitHub Secrets
-- SocialData/TikHub 的拉取間隔會記錄在 `data/paid-source-state.json`，只儲存上次執行時間、結果數和錯誤名，不儲存 API Key；半小時Workflow跳過付費源時，舊條目仍保留在 `data/archive.json`，不會因為本輪未拉取就被清空
+- SocialData/TikHub 的拉取間隔會記錄在 `data/paid-source-state.json`，只儲存上次執行時間、結果數和錯誤名，不儲存 API Key；每小時Workflow跳過付費源時，舊條目仍保留在 `data/archive.json`，不會因為本輪未拉取就被清空
 
 預設情況下，本專案不需要任何API Key就能跑核心流程。
 
